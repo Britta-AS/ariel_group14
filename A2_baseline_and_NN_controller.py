@@ -27,21 +27,23 @@ def controller (model, data, to_track) :
     output_size = model.nu
 
     # Initialize the networks weights randomly
-    w1 = np.random.randn(input_size, hidden_size) * 0.1
+    w1 = np.random.randn(input_size, output_size)  * 0.1
     w2 = np.random.randn(hidden_size, hidden_size) * 0.1
     w3 = np.random.randn(hidden_size, output_size) * 0.1
 
     # Get inputs, in this case the positions of the actuator motors (hinges)
-    inputs = data. qpos
+    inputs = data.qpos
     # Run the inputs through the lays of the network.
-    layer1 =  sigmoid(np. dot(inputs, w1))
+    layer1 = sigmoid(np.dot(inputs, w1))
     layer2 = sigmoid(np.dot(layer1, w2))
     outputs = sigmoid(np.dot(layer2, w3))
-    # Scale outputs to [-pi/2, pi/2]
 
+    # Scale outputs to [-pi/2, pi/2]
     data.ctrl = np.clip(outputs, -np.pi/2, np.pi/2)
+
     # Save movement to history
     HISTORY. append (to_track[0].xpos.copy())
+
 
 def show_qpos_history(history:list):
     """
